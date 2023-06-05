@@ -3,6 +3,7 @@
 import { FC, useState } from "react";
 import { IoHeart, IoHeartOutline } from "react-icons/io5";
 import Card from "@/components/card";
+import { type StaticImageData } from "next/image";
 
 type Props = {
   title?: string
