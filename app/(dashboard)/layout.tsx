@@ -8,12 +8,12 @@ import Footer from "@/components/footer/Footer";
 
 import routes from "@/data/routes";
 
+
 export default function DashboardLayout({
     children, // will be a page or nested layout
 }: {
     children: React.ReactNode;
 }) {
-    // const { ...rest } = props;
     const pathname = usePathname()
 
     const [open, setOpen] = useState(true);
@@ -24,6 +24,7 @@ export default function DashboardLayout({
             window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
         );
     }, []);
+
     useEffect(() => {
         getActiveRoute(routes);
     }, [pathname]);
@@ -31,26 +32,11 @@ export default function DashboardLayout({
     const getActiveRoute = (routes: any) => {
         let activeRoute = "Main Dashboard";
         for (let i = 0; i < routes.length; i++) {
-            if (
-                window.location.href.indexOf(
-                    routes[i].layout + "/" + routes[i].path
-                ) !== -1
-            ) {
+            if (window.location.href.indexOf(routes[i].path) !== -1) {
                 setCurrentRoute(routes[i].name);
             }
         }
         return activeRoute;
-    };
-    const getActiveNavbar = (routes: any) => {
-        let activeNavbar = false;
-        for (let i = 0; i < routes.length; i++) {
-            if (
-                window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-            ) {
-                return routes[i].secondary;
-            }
-        }
-        return activeNavbar;
     };
 
     return (
@@ -66,13 +52,12 @@ export default function DashboardLayout({
                             <Navbar
                                 onOpenSidenav={() => setOpen(true)}
                                 brandText={currentRoute}
-                            //   logoText={"Horizon UI Tailwind React"}
-                            //   secondary={getActiveNavbar(routes)}
-                            //   {...rest}
                             />
+
                             <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
                                 {children}
                             </div>
+
                             <div className="p-3">
                                 <Footer />
                             </div>
