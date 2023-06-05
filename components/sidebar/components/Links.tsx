@@ -29,7 +29,8 @@ export function SidebarLinks(props: Props) {
         route.layout === "/rtl"
       ) {
         return (
-          <Link key={index} href={route.layout + "/" + route.path}>
+          // <Link key={index} href={route.layout + "/" + route.path}>
+          <Link key={index} href={route.path}>
             <div className="relative mb-3 flex hover:cursor-pointer">
               <li
                 className="my-[3px] flex cursor-pointer items-center px-8"

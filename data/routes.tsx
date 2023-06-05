@@ -10,7 +10,7 @@ const routes = [
   {
     name: "Main Dashboard",
     layout: "/dashboard",
-    path: "main",
+    path: "dashboard",
     icon: <MdHome className="h-6 w-6" />,
   },
   {
