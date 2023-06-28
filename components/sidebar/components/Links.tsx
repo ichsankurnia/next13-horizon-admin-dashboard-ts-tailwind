@@ -1,20 +1,21 @@
 'use client'
 
-import React from "react";
-import DashIcon from "@/components/icons/DashIcon";
+import React, { MouseEvent } from "react";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
+import DashIcon from "@/components/icons/DashIcon";
 // chakra imports
 
+import routes from "@/data/routes";
+
+
 type Props = {
-  routes: any
+  onClickRoute?: (e: MouseEvent<HTMLElement>) => any | any
 }
 
-export function SidebarLinks(props: Props) {
+export function SidebarLinks({ onClickRoute }: Props) {
   // Chakra color mode
   const pathname = usePathname()
-
-  const { routes } = props;
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
@@ -30,7 +31,7 @@ export function SidebarLinks(props: Props) {
       ) {
         return (
           // <Link key={index} href={route.layout + "/" + route.path}>
-          <Link key={index} href={route.path}>
+          <Link key={index} href={route.path} onClick={onClickRoute}>
             <div className="relative mb-3 flex hover:cursor-pointer">
               <li
                 className="my-[3px] flex cursor-pointer items-center px-8"

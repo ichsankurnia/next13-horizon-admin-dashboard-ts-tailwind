@@ -2,6 +2,8 @@ import { type Metadata } from 'next'
 import './globals.css'
 // import "react-calendar/dist/Calendar.css";
 import "@/components/calendar/MiniCalendar.css";
+import ThemeProvider from '@/providers/ThemeProvider';
+
 
 export const metadata: Metadata = {
   title: 'Horizon UI by Ories',
@@ -25,7 +27,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

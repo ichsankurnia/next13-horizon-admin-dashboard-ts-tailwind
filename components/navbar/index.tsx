@@ -1,10 +1,10 @@
 'use client'
 
-import { MouseEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FiAlignJustify } from "react-icons/fi";
+import { usePathname } from "next/navigation";
+import { FiAlignJustify, FiSearch } from "react-icons/fi";
 import { BsArrowBarUp } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import {
   IoMdNotificationsOutline,
@@ -12,16 +12,33 @@ import {
 } from "react-icons/io";
 import Dropdown from "@/components/dropdown";
 
+import routes from "@/data/routes";
+import { useSidebarContext } from "@/providers/SidebarProvider";
+import { useThemeContext } from "@/providers/ThemeProvider";
 
 type Props = {
-  onOpenSidenav?: (e: MouseEvent<HTMLElement>) => any
-  brandText?: string
 }
 
-const Navbar = (props: Props) => {
-  const { onOpenSidenav, brandText } = props;
+const Navbar = ({ }: Props) => {
+  const [currentRoute, setCurrentRoute] = useState("Main Dashboard");
 
-  const [darkmode, setDarkmode] = useState(false);
+  const pathname = usePathname()
+  const { setOpenSidebar } = useSidebarContext()
+  const { theme, setTheme } = useThemeContext()
+
+  useEffect(() => {
+    getActiveRoute(routes);
+  }, [pathname]);
+
+  const getActiveRoute = (routes: any) => {
+    let activeRoute = "Main Dashboard";
+    for (let i = 0; i < routes.length; i++) {
+      if (window.location.href.indexOf(routes[i].path) !== -1) {
+        setCurrentRoute(routes[i].name);
+      }
+    }
+    return activeRoute;
+  };
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -35,12 +52,12 @@ const Navbar = (props: Props) => {
             </span>
           </Link>
           <Link className="text-sm font-normal capitalize text-navy-700 hover:underline dark:text-white dark:hover:text-white" href="#" >
-            {brandText}
+            {currentRoute}
           </Link>
         </div>
         <p className="shrink text-[33px] capitalize text-navy-700 dark:text-white">
           <Link href="#" className="font-bold capitalize hover:text-navy-700 dark:hover:text-white" >
-            {brandText}
+            {currentRoute}
           </Link>
         </p>
       </div>
@@ -56,7 +73,7 @@ const Navbar = (props: Props) => {
             className="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
           />
         </div>
-        <span className="flex cursor-pointer text-xl text-gray-600 dark:text-white xl:hidden" onClick={onOpenSidenav} >
+        <span className="flex cursor-pointer text-xl text-gray-600 dark:text-white xl:hidden" onClick={() => setOpenSidebar(true)} >
           <FiAlignJustify className="h-5 w-5" />
         </span>
 
@@ -143,16 +160,10 @@ const Navbar = (props: Props) => {
         {/* DARK MODE */}
         <div className="cursor-pointer text-gray-600"
           onClick={() => {
-            if (darkmode) {
-              document.body.classList.remove("dark");
-              setDarkmode(false);
-            } else {
-              document.body.classList.add("dark");
-              setDarkmode(true);
-            }
+            theme === 'dark' ? setTheme('light') : setTheme('dark')
           }}
         >
-          {darkmode ? (
+          {theme === 'dark' ? (
             <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
           ) : (
             <RiMoonFill className="h-4 w-4 text-gray-600 dark:text-white" />
